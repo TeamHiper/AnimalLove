@@ -2,8 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
-	// QueryDSL을 사용하려면 JPA와 연동되는 플러그인도 필요합니다.
-	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.animal'
@@ -27,44 +25,57 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	// h2 database
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	// build.gradle 파일에 추가
+
+	// Spring Security
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	testImplementation 'org.springframework.security:spring-security-test'
+	// spring security oauth2 client
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// build.gradle 파일에 추가
-	implementation 'com.querydsl:querydsl-jpa:5.0.0'
-	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
-	// build.gradle 파일에 추가
+	// QueryDSL APT- JPAAnnotationProcessor 사용 지정
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+
+	// QueryDSL 관련 NoClassDefFoundError 방지용 annotationProcessor 추가
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-
 }
 
 
 
-// sourceSets 설정
-querydsl {
-	jpa = true
-}
+// QueryDSL 관련 START
+def querydslDir = "src/main/generated"
 
 sourceSets {
-	main.java.srcDir "build/generated/source/querydsl"
+	main.java.srcDirs += [ querydslDir ]
 }
 
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
+
+clean.doLast {
+	file(querydslDir).deleteDir()
+}
+// QueryDSL 관련 END
 
 
 
