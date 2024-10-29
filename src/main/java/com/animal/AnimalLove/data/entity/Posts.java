@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @ToString
@@ -34,5 +36,9 @@ public class Posts extends BaseEntity {
     @Comment(value = "유저 아이디")
     @ToString.Exclude
     private Users user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Comments> Comments;
 
 }

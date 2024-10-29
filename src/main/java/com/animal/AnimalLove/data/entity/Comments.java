@@ -23,7 +23,7 @@ public class Comments extends BaseEntity{
     @Comment(value = "내용")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Comment(value = "부모 댓글 아이디")
     private String partnerId;
 
