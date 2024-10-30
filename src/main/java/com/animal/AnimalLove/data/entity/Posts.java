@@ -1,6 +1,7 @@
 package com.animal.AnimalLove.data.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -40,5 +41,13 @@ public class Posts extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
     private List<Comments> Comments;
+
+    @Builder
+    public Posts(Long postId, String content, byte[] image, Users user) {
+        this.postId = postId;
+        this.content = content;
+        this.image = image;
+        this.user = user;
+    }
 
 }

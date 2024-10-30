@@ -44,4 +44,12 @@ public class Users extends BaseEntity {
     @ToString.Exclude
     private List<Posts> posts;
 
+    @Builder
+    public Users(Long userId, String username, String email, String role) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+
 }
