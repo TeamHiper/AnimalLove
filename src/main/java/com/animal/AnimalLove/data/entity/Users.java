@@ -35,7 +35,8 @@ public class Users extends BaseEntity {
     @Comment(value = "역할")
     private String role;
 
-    @Column(nullable = false)
+    // test용
+    @Column(nullable = true)
     @Comment(value = "프로필 이미지")
     @Lob
     private byte[] profileImage;

@@ -27,7 +27,8 @@ public class Posts extends BaseEntity {
     @Comment(value = "내용")
     private String content;
 
-    @Column(nullable = false)
+    // test용
+    @Column(nullable = true)
     @Comment(value = "이미지")
     @Lob
     private byte[] image;
