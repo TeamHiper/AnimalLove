@@ -33,12 +33,12 @@ public record PostDto(
                 .build();
     }
 
-    public Users toUser(){
-        return Users.builder()
-                .userId(user.getUserId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
+    public Posts toEntityWithUser(Users user){
+        return Posts.builder()
+                .postId(postId)
+                .content(content)
+                .image(image)
+                .user(user)
                 .build();
     }
 }
