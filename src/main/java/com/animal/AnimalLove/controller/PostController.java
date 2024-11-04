@@ -2,7 +2,6 @@ package com.animal.AnimalLove.controller;
 
 import com.animal.AnimalLove.constants.ApiUrlConstants;
 import com.animal.AnimalLove.data.dto.PostDto;
-import com.animal.AnimalLove.data.request.PostCreationRequest;
 import com.animal.AnimalLove.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +18,9 @@ public class PostController {
 
     @Operation(summary = "게시물 등록", description = "새로운 게시물 등록")
     @PostMapping(ApiUrlConstants.API_V1_POST_REGISTER)
-    public ResponseEntity<Long> postRegister(@RequestBody PostCreationRequest request) {
-        Long savedPost = postsService.registerPost(request);
-        return ResponseEntity.ok().body(savedPost);
+    public ResponseEntity<Long> postRegister(@RequestBody PostDto postDto) {
+        Long savedPostId = postsService.registerPost(postDto);
+        return ResponseEntity.ok().body(savedPostId);
     }
 
 }

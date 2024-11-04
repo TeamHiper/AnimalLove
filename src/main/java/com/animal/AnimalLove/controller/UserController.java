@@ -20,6 +20,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "Mock 유저 등록", description = "Mock User 등록")
+    @PostMapping(ApiUrlConstants.API_V1_USER_REGISTER+"/mock")
+    public ResponseEntity<UserDto> mockUserRegister() {
+        UserDto savedUser = userService.registerMockUser();
+        return ResponseEntity.ok().body(savedUser);
+    }
+    
     @Operation(summary = "유저 등록", description = "새로운 유저를 등록")
     @PostMapping(ApiUrlConstants.API_V1_USER_REGISTER)
     public ResponseEntity<UserDto> userRegister(@RequestBody UserDto userDto) {
