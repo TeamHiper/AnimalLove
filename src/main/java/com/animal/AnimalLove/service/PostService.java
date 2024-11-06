@@ -21,8 +21,7 @@ public class PostService {
     public Long registerPost(PostDto postDto){
 
         // 임의 user
-        MockUserUtil userUtil = new MockUserUtil();
-        User users = userUtil.getMockUser();
+        User users = MockUserUtil.getMockUser();
 
         User user = userRepository.findById(users.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -34,5 +33,15 @@ public class PostService {
         Post savedPost = postRepository.save(post);
         return savedPost.getPostId();
 
+    }
+
+    public PostDto getPost(Long postId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        log.info("[getPost] postDto: {}", PostDto.from(post));
+
+
+        return PostDto.from(post);
     }
 }

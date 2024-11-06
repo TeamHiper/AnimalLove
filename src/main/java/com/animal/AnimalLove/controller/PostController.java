@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,6 +22,13 @@ public class PostController {
     public ResponseEntity<Long> postRegister(@RequestBody PostDto postDto) {
         Long savedPostId = postsService.registerPost(postDto);
         return ResponseEntity.ok().body(savedPostId);
+    }
+
+    @Operation(summary = "게시물 상세조회")
+    @PostMapping(ApiUrlConstants.API_V1_POST_DETAIL+"/{postId}")
+    public ResponseEntity<PostDto> getPost(@PathVariable(name = "postId") Long postId) {
+        PostDto postDto = postsService.getPost(postId);
+        return ResponseEntity.ok().body(postDto);
     }
 
 }
