@@ -1,7 +1,7 @@
 package com.animal.AnimalLove.service;
 
 import com.animal.AnimalLove.data.dto.UserDto;
-import com.animal.AnimalLove.data.entity.Users;
+import com.animal.AnimalLove.data.entity.User;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +15,17 @@ public class UserService {
 
     public UserDto registerMockUser(){
         MockUserUtil mockUserUtil = new MockUserUtil();
-        Users user = mockUserUtil.getMockUser();
+        User user = mockUserUtil.getMockUser();
 
-        Users savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
         return UserDto.from(savedUser);
     }
 
 
     public UserDto registerUser(UserDto userDto){
 
-        Users user = userDto.toEntity();
-        Users savedUser = userRepository.save(user);
+        User user = userDto.toEntity();
+        User savedUser = userRepository.save(user);
         return UserDto.from(savedUser);
 
     }

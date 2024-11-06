@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	// Cloudinary Java SDK
+	implementation 'com.cloudinary:cloudinary-http5:2.0.0'
+
 	// Spring Security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	testImplementation 'org.springframework.security:spring-security-test'

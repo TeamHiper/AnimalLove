@@ -9,6 +9,7 @@ public class ApiUrlConstants {
     public static final String COMMENT = "/comment";
     public static final String BOOKMARK = "/bookmark";
     public static final String FOLLOW = "/follow";
+    public static final String IMAGE = "/image";
 
     public static final String API_V1 = API + V1;
 
@@ -24,6 +25,8 @@ public class ApiUrlConstants {
     public static final String API_V1_BOOKMARK = API + V1 + BOOKMARK;
     // 팔로우 관련
     public static final String API_V1_FOLLOW = API + V1 + FOLLOW;
-
+    // 이미지 관련
+    public static final String API_V1_IMAGE = API + V1 + IMAGE;
+    public static final String API_V1_IMAGE_UPLOAD = API + V1 + IMAGE + "/upload";
 
 }

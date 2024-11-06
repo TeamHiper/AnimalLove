@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Comment;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
@@ -12,30 +11,30 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "comments")
-public class Comments extends BaseEntity{
+@Table(name = "comment")
+public class Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment(value = "코멘트 아이디")
+    @org.hibernate.annotations.Comment(value = "코멘트 아이디")
     private Long commentId;
 
     @Column(nullable = false)
-    @Comment(value = "내용")
+    @org.hibernate.annotations.Comment(value = "내용")
     private String content;
 
     @Column(nullable = true)
-    @Comment(value = "부모 댓글 아이디")
+    @org.hibernate.annotations.Comment(value = "부모 댓글 아이디")
     private String partnerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId")
-    @Comment(value = "포스트 아이디")
+    @org.hibernate.annotations.Comment(value = "포스트 아이디")
     @ToString.Exclude
-    private Posts post;
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    @Comment(value = "유저 아이디")
+    @org.hibernate.annotations.Comment(value = "유저 아이디")
     @ToString.Exclude
-    private Users user;
+    private User user;
 }

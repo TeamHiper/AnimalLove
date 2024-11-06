@@ -12,22 +12,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "bookmarks")
-public class Bookmarks extends BaseEntity {
+@Table(name = "follow")
+public class Follow extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment(value = "북마크 아이디")
-    private Long bookmarkId;
+    @Comment(value = "팔로우 아이디")
+    private Long followId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
-    @Comment(value = "포스트 아이디")
-    @ToString.Exclude
-    private Posts post;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     @Comment(value = "유저 아이디")
     @ToString.Exclude
-    private Users user;
+    private User user;
 }

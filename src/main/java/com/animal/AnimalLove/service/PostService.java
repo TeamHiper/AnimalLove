@@ -1,8 +1,10 @@
 package com.animal.AnimalLove.service;
 
 import com.animal.AnimalLove.data.dto.PostDto;
-import com.animal.AnimalLove.data.entity.Posts;
-import com.animal.AnimalLove.data.entity.Users;
+import com.animal.AnimalLove.data.entity.Post;
+
+import com.animal.AnimalLove.data.entity.User;
+
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
@@ -22,16 +24,16 @@ public class PostService {
 
         // 임의 user
         MockUserUtil userUtil = new MockUserUtil();
-        Users users = userUtil.getMockUser();
+        User users = userUtil.getMockUser();
 
-        Users user = userRepository.findById(users.getUserId())
+        User user = userRepository.findById(users.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         log.info("[userRepository.findById] 값 : {}, {}",user.getUserId(), user.getUsername());
 
-        Posts post = postDto.toEntityWithUser(user);
+        Post post = postDto.toEntityWithUser(user);
 
-        Posts savedPost = postRepository.save(post);
+        Post savedPost = postRepository.save(post);
         return savedPost.getPostId();
 
     }

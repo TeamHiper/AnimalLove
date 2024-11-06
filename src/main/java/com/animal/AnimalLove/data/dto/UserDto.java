@@ -1,7 +1,7 @@
 package com.animal.AnimalLove.data.dto;
 
-import com.animal.AnimalLove.data.entity.Posts;
-import com.animal.AnimalLove.data.entity.Users;
+import com.animal.AnimalLove.data.entity.User;
+
 
 public record UserDto(
         Long userId,
@@ -15,7 +15,7 @@ public record UserDto(
         return new UserDto(userId, username, email, role, profileImage);
     }
 
-    public static UserDto from(Users user){
+    public static UserDto from(User user){
         return new UserDto(
                 user.getUserId(),
                 user.getUsername(),
@@ -25,8 +25,8 @@ public record UserDto(
         );
     }
 
-    public Users toEntity(){
-        return Users.builder()
+    public User toEntity(){
+        return User.builder()
                 .userId(userId)
                 .username(username)
                 .email(email)
