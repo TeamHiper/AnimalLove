@@ -1,5 +1,6 @@
 package com.animal.AnimalLove.data.entity;
 
+import com.animal.AnimalLove.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,6 +34,9 @@ public class Post extends BaseEntity {
     @Lob
     private byte[] image;
 
+    @Convert(converter = StringListConverter.class)
+    private List<String> tags; // 게시글에 사용된 태그 목록
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     @org.hibernate.annotations.Comment(value = "유저 아이디")
@@ -41,6 +46,9 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
     private List<Comment> Comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Image> images;
 
     @Builder
     public Post(Long postId, String content, byte[] image, User user) {

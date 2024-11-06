@@ -1,6 +1,5 @@
 package com.animal.AnimalLove.data.dto;
 
-import com.animal.AnimalLove.data.entity.Post;
 import com.animal.AnimalLove.data.entity.User;
 
 public record UserDto(

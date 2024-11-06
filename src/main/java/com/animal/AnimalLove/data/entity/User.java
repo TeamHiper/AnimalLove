@@ -1,5 +1,7 @@
 package com.animal.AnimalLove.data.entity;
 
+import com.animal.AnimalLove.converter.LongListConverter;
+import com.animal.AnimalLove.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +42,9 @@ public class User extends BaseEntity {
     @Comment(value = "프로필 이미지")
     @Lob
     private byte[] profileImage;
+
+    @Convert(converter = LongListConverter.class)
+    private List<Long> likedPosts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
