@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Comment;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
@@ -15,36 +14,36 @@ import java.util.List;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "posts")
-public class Posts extends BaseEntity {
+@Table(name = "post")
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment(value = "포스트 아이디")
+    @org.hibernate.annotations.Comment(value = "포스트 아이디")
     private Long postId;
 
     @Column(nullable = false)
-    @Comment(value = "내용")
+    @org.hibernate.annotations.Comment(value = "내용")
     private String content;
 
     // test용
     @Column(nullable = true)
-    @Comment(value = "이미지")
+    @org.hibernate.annotations.Comment(value = "이미지")
     @Lob
     private byte[] image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    @Comment(value = "유저 아이디")
+    @org.hibernate.annotations.Comment(value = "유저 아이디")
     @ToString.Exclude
-    private Users user;
+    private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
-    private List<Comments> Comments;
+    private List<Comment> Comments;
 
     @Builder
-    public Posts(Long postId, String content, byte[] image, Users user) {
+    public Post(Long postId, String content, byte[] image, User user) {
         this.postId = postId;
         this.content = content;
         this.image = image;

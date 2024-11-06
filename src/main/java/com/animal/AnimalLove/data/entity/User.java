@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
-public class Users extends BaseEntity {
+@Table(name = "user")
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +43,10 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
-    private List<Posts> posts;
+    private List<Post> posts;
 
     @Builder
-    public Users(Long userId, String username, String email, String role) {
+    public User(Long userId, String username, String email, String role) {
         this.userId = userId;
         this.username = username;
         this.email = email;

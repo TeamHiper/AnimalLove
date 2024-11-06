@@ -1,7 +1,6 @@
 package com.animal.AnimalLove.data.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,16 +12,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "follows")
-public class Follows extends BaseEntity{
+@Table(name = "bookmark")
+public class Bookmark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment(value = "팔로우 아이디")
-    private Long followId;
+    @Comment(value = "북마크 아이디")
+    private Long bookmarkId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "postId")
+    @Comment(value = "포스트 아이디")
+    @ToString.Exclude
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
     @Comment(value = "유저 아이디")
     @ToString.Exclude
-    private Users user;
+    private User user;
 }

@@ -1,21 +1,21 @@
 package com.animal.AnimalLove.data.dto;
 
-import com.animal.AnimalLove.data.entity.Posts;
-import com.animal.AnimalLove.data.entity.Users;
+import com.animal.AnimalLove.data.entity.Post;
+import com.animal.AnimalLove.data.entity.User;
 
 public record PostDto(
         Long postId,
         String content,
         byte[] image,
-        Users user
+        User user
 
 ) {
 
-    public static PostDto of(Long postId, String content, byte[] image, Users user) {
+    public static PostDto of(Long postId, String content, byte[] image, User user) {
         return new PostDto(postId, content, image, user);
     }
 
-    public static PostDto from(Posts post){
+    public static PostDto from(Post post){
         return new PostDto(
                 post.getPostId(),
                 post.getContent(),
@@ -24,8 +24,8 @@ public record PostDto(
         );
     }
 
-    public Posts toEntity(){
-        return Posts.builder()
+    public Post toEntity(){
+        return Post.builder()
                 .postId(postId)
                 .content(content)
                 .image(image)
@@ -33,8 +33,8 @@ public record PostDto(
                 .build();
     }
 
-    public Posts toEntityWithUser(Users user){
-        return Posts.builder()
+    public Post toEntityWithUser(User user){
+        return Post.builder()
                 .postId(postId)
                 .content(content)
                 .image(image)
