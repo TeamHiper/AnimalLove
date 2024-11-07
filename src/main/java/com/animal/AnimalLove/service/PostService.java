@@ -20,7 +20,7 @@ public class PostService {
 
     public Long registerPost(PostDto postDto){
 
-        // 임의 user
+        // 임의 user 조회
         User users = MockUserUtil.getMockUser();
 
         User user = userRepository.findById(users.getUserId())
