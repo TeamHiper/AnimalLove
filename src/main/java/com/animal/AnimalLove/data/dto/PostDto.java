@@ -7,11 +7,11 @@ public record PostDto(
         Long postId,
         String content,
         byte[] image,
-        User user
+        UserDto user // User -> UserDto로 변환
 
 ) {
 
-    public static PostDto of(Long postId, String content, byte[] image, User user) {
+    public static PostDto of(Long postId, String content, byte[] image, UserDto user) {
         return new PostDto(postId, content, image, user);
     }
 
@@ -20,7 +20,7 @@ public record PostDto(
                 post.getPostId(),
                 post.getContent(),
                 post.getImage(),
-                post.getUser()
+                UserDto.from(post.getUser()) // User -> UserDto로 변환
         );
     }
 
@@ -29,7 +29,7 @@ public record PostDto(
                 .postId(postId)
                 .content(content)
                 .image(image)
-                .user(user)
+                .user(user.toEntity())
                 .build();
     }
 
