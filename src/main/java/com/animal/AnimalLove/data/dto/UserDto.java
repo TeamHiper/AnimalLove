@@ -2,7 +2,6 @@ package com.animal.AnimalLove.data.dto;
 
 import com.animal.AnimalLove.data.entity.User;
 
-
 public record UserDto(
         Long userId,
         String username,

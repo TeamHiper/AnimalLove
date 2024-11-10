@@ -1,13 +1,8 @@
 package com.animal.AnimalLove.service;
 
-import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
-import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
-
 import com.animal.AnimalLove.data.entity.User;
-
-import com.animal.AnimalLove.data.repository.ImageRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
@@ -22,13 +17,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final ImageRepository imageRepository;
 
-    public Long registerPost(PostDto postDto, String url, String publicId){
+    public Long registerPost(PostDto postDto){
 
-        // 임의 user
-        MockUserUtil userUtil = new MockUserUtil();
-        User users = userUtil.getMockUser();
+        // 임의 user 조회
+        // Test
+        User users = MockUserUtil.getMockUser();
 
         User user = userRepository.findById(users.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -38,12 +32,17 @@ public class PostService {
         Post post = postDto.toEntityWithUser(user);
 
         Post savedPost = postRepository.save(post);
-        //이미지 저장
-        imageRepository.save(
-                        ImageDto
-                        .of(url,publicId,savedPost)
-                        .toEntity());
         return savedPost.getPostId();
 
+    }
+
+    public PostDto getPost(Long postId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        log.info("[getPost] postDto: {}", PostDto.from(post));
+
+
+        return PostDto.from(post);
     }
 }

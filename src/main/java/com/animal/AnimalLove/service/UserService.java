@@ -14,8 +14,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto registerMockUser(){
-        MockUserUtil mockUserUtil = new MockUserUtil();
-        User user = mockUserUtil.getMockUser();
+        User user = MockUserUtil.getMockUser();
 
         User savedUser = userRepository.save(user);
         return UserDto.from(savedUser);
