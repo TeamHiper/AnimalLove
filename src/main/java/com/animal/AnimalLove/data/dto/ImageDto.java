@@ -24,9 +24,11 @@ public record ImageDto(
 
         }
 
-    public static ImageDto of(String url, Post post, String publicId){
+    public static ImageDto of(String url, String publicId,Post post){
+
         return new ImageDto(url, publicId, post);
     }
+
 
     public static ImageDto from(Image image){
             return new ImageDto(

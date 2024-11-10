@@ -1,10 +1,13 @@
 package com.animal.AnimalLove.service;
 
+import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
+import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
 
 import com.animal.AnimalLove.data.entity.User;
 
+import com.animal.AnimalLove.data.repository.ImageRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
@@ -19,8 +22,9 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
-    public Long registerPost(PostDto postDto){
+    public Long registerPost(PostDto postDto, String url, String publicId){
 
         // 임의 user
         MockUserUtil userUtil = new MockUserUtil();
@@ -34,6 +38,11 @@ public class PostService {
         Post post = postDto.toEntityWithUser(user);
 
         Post savedPost = postRepository.save(post);
+        //이미지 저장
+        imageRepository.save(
+                        ImageDto
+                        .of(url,publicId,savedPost)
+                        .toEntity());
         return savedPost.getPostId();
 
     }

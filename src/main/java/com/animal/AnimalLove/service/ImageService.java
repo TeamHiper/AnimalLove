@@ -1,5 +1,6 @@
 package com.animal.AnimalLove.service;
 
+import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
 import com.animal.AnimalLove.data.repository.ImageRepository;
@@ -25,7 +26,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final PostRepository postRepository;
 
-    public Image uploadImage(Long savedPostId, MultipartFile file) throws IOException {
+    public ImageDto uploadImage( MultipartFile file) throws IOException {
         // Cloudinary에 이미지 업로드
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
 
@@ -33,18 +34,8 @@ public class ImageService {
         String url = (String) uploadResult.get("secure_url");
         String publicId = (String) uploadResult.get("public_id");
 
-        // post 객체 조회
-        Post post = postRepository.findById(savedPostId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+        // return
+        return ImageDto.of(url,publicId, null);
 
-        log.info("[postRepository.findById] 값 : {}, {}",post.getPostId(), post.getComments());
-
-        // 이미지 정보를 데이터베이스에 저장
-        return imageRepository.save(Image.builder()
-                .publicId(publicId)
-                .url(url)
-                .post(post)
-                .build()
-        );
     }
 }

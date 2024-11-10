@@ -1,6 +1,7 @@
 package com.animal.AnimalLove.controller;
 
 import com.animal.AnimalLove.constants.ApiUrlConstants;
+import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping(ApiUrlConstants.API_V1_IMAGE_UPLOAD)
-    public ResponseEntity<Image> uploadImage(@RequestParam Long savedPostId ,@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ImageDto> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            Image savedImage = imageService.uploadImage(savedPostId,file);
+            ImageDto savedImage = imageService.uploadImage(file);
             return ResponseEntity.ok(savedImage);
         } catch (IOException e) {
             return ResponseEntity.status(500).body(null);
