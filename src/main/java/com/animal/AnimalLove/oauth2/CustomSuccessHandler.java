@@ -1,7 +1,7 @@
 package com.animal.AnimalLove.oauth2;
 
 import com.animal.AnimalLove.data.dto.CustomOAuth2User;
-import com.animal.AnimalLove.jwt.JWTUtil;
+import com.animal.AnimalLove.jwt.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +18,9 @@ import java.util.Iterator;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public CustomSuccessHandler(JWTUtil jwtUtil) {
+    public CustomSuccessHandler(JwtUtil jwtUtil) {
 
         this.jwtUtil = jwtUtil;
     }

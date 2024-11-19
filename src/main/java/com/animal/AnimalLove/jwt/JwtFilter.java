@@ -2,7 +2,6 @@ package com.animal.AnimalLove.jwt;
 
 import com.animal.AnimalLove.data.dto.CustomOAuth2User;
 import com.animal.AnimalLove.data.dto.UserDto;
-import com.animal.AnimalLove.data.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,11 +14,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class JWTFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    public JwtFilter(JwtUtil jwtUtil) {
 
         this.jwtUtil = jwtUtil;
     }

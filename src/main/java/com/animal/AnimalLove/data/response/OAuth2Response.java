@@ -1,4 +1,4 @@
-package com.animal.AnimalLove.data.dto;
+package com.animal.AnimalLove.data.response;
 
 public interface OAuth2Response {
 
