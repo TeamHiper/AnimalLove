@@ -1,8 +1,8 @@
 package com.animal.AnimalLove.service;
 
 import com.animal.AnimalLove.data.dto.*;
-import com.animal.AnimalLove.data.entity.UserEntity;
-import com.animal.AnimalLove.data.repository.User2Repository;
+import com.animal.AnimalLove.data.entity.User;
+import com.animal.AnimalLove.data.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final User2Repository userRepository;
+    private final UserRepository userRepository;
 
-    public CustomOAuth2UserService(User2Repository userRepository) {
+    public CustomOAuth2UserService(UserRepository userRepository) {
 
         this.userRepository = userRepository;
     }
@@ -41,39 +41,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 로그인 성공 시 로직 추후 작성
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
-        UserEntity existData = userRepository.findByUsername(username);
+        User existData = userRepository.findByUsername(username);
 
         if (existData == null){
 
-            UserEntity userEntity = new UserEntity();
-            userEntity.setUsername(username);
-            userEntity.setEmail(oAuth2Response.getEmail());
-            userEntity.setName(oAuth2Response.getName());
-            userEntity.setRole("ROLE_USER");
+            UserDto newUserDto = UserDto.of(username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
+            userRepository.save(newUserDto.toEntity());
 
-            userRepository.save(userEntity);
-
-            UserDTO2 userDTO = new UserDTO2();
-            userDTO.setUsername(username);
-            userDTO.setName(oAuth2Response.getName());
-            userDTO.setRole("ROLE_USER");
-
-            return new CustomOAuth2User(userDTO);
-
+            return new CustomOAuth2User(newUserDto);
 
         } else {
+            UserDto userDto = UserDto.from(existData);
+            UserDto newUserDto = UserDto.of(userDto.username(),
+                    oAuth2Response.getEmail(),
+                    oAuth2Response.getName(),
+                    userDto.role(),
+                    userDto.profileImage()
+                    );
 
-            existData.setEmail(oAuth2Response.getEmail());
-            existData.setName(oAuth2Response.getName());
+            userRepository.save(newUserDto.toEntity());
 
-            userRepository.save(existData);
-
-            UserDTO2 userDTO = new UserDTO2();
-            userDTO.setUsername(existData.getUsername());
-            userDTO.setName(oAuth2Response.getName());
-            userDTO.setRole(existData.getRole());
-
-            return new CustomOAuth2User(userDTO);
+            return new CustomOAuth2User(newUserDto);
 
 
         }

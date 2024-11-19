@@ -29,6 +29,9 @@ public class User extends BaseEntity {
     @Comment(value = "유저 이름")
     private String username;
 
+    @Comment(value = "유저 실명")
+    private String name;
+
     @Column(nullable = false)
     @Comment(value = "이메일")
     private String email;
@@ -51,9 +54,10 @@ public class User extends BaseEntity {
     private List<Post> posts;
 
     @Builder
-    public User(Long userId, String username, String email, String role) {
+    public User(Long userId, String username,String name, String email, String role) {
         this.userId = userId;
         this.username = username;
+        this.name = name;
         this.email = email;
         this.role = role;
     }
