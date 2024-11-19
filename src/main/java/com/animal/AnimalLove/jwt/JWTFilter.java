@@ -1,7 +1,8 @@
 package com.animal.AnimalLove.jwt;
 
 import com.animal.AnimalLove.data.dto.CustomOAuth2User;
-import com.animal.AnimalLove.data.dto.UserDTO2;
+import com.animal.AnimalLove.data.dto.UserDto;
+import com.animal.AnimalLove.data.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -64,12 +65,10 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRole(token);
 
         //userDTO를 생성하여 값 set
-        UserDTO2 userDTO = new UserDTO2();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);
+        UserDto userDto = UserDto.ofJwt(username,role);
 
         //UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
