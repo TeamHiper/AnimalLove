@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,7 +33,6 @@ public class SecurityConfig {
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
     }
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -93,6 +93,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",    // OpenAPI 문서 경로
                                 "/swagger-resources/**",
                                 "/webjars/**"         // Swagger 관련 정적 리소스
+                                ,"/api/v1/**"   // 만드는 엔드포인트별 임시 미체크
                         ).permitAll()
 
                         .anyRequest().authenticated());
@@ -106,4 +107,5 @@ public class SecurityConfig {
         return http.build();
 
     }
+
 }
