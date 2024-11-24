@@ -14,6 +14,9 @@ import com.animal.AnimalLove.util.MockUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -60,33 +63,52 @@ public class PostService {
     }
 
     // 게시물 수정
+    @Transactional
     public int updatePost(PostDto postDto, String url, String publicId){
 
         // postDto의 user email에 해당하는 user 정보를 조회
         String userEmail = postDto.user().email();
-        log.info("userEmail: {}", userEmail);
         User user = userRepository.findByEmail(userEmail).
                 orElseThrow(() -> new IllegalArgumentException(userEmail + " 로 등록된 사용자를 찾을 수 없습니다."));
-        log.info("조회된 user: {}", user);
 
         // postDto의 postId를 통해 post 정보를 조회
         Long postId = postDto.postId();
-        log.info("postId: {}", postId);
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
-        log.info("조회된 post: {}", post);
 
         // 위에서 조회한 두 Entity에서 user email을 대조해본다.
         if (!post.getUser().getEmail().equals(user.getEmail())) {
             throw new SecurityException("게시물 수정 권한이 없습니다.");
         }
 
-        return postRepository.updatePost(
+        int postUpdateResult = postRepository.updatePost(
                 postDto.postId(),
                 postDto.content(),
                 postDto.image(),
                 user
         );
+
+        // Image 수정
+        List<Image> images = post.getImages();
+        if (images.isEmpty()){
+            throw new IllegalArgumentException("해당 게시물에 연결된 이미지를 찾을 수 없습니다.");
+        }
+
+        int imageUpdateResult = 1; // 업데이트 성공 여부 (1: 성공, 0: 실패)
+
+        for (Image image : post.getImages()) {
+            int updateResult = imageRepository.updateImage(
+                    image.getId(),
+                    url,
+                    publicId,
+                    post
+            );
+
+            if (updateResult == 0) imageUpdateResult = updateResult; // 하나라도 실패하면 최종 결과를 실패로 설정
+        }
+
+        // 두 업데이트 결과를 조합하여 반환 (성공 시 1, 실패 시 0)
+        return (postUpdateResult > 0 && imageUpdateResult > 0) ? 1 : 0;
 
     }
 }

@@ -39,11 +39,12 @@ public class PostController {
 
     @Operation(summary = "게시물 수정", description = "기존 게시물 수정")
     @PostMapping(ApiUrlConstants.API_V1_POST_UPDATE)
-    public int postUpdate(@RequestBody PostDto postDto,
-                                             @RequestParam(name = "url")String url,
-                                             @RequestParam(name = "publicId") String publicId) {
+    public ResponseEntity<Integer> postUpdate(@RequestBody PostDto postDto,
+                                              @RequestParam(name = "url")String url,
+                                              @RequestParam(name = "publicId") String publicId) {
 
-        return postsService.updatePost(postDto,url,publicId);
+        int result = postsService.updatePost(postDto,url,publicId);
+        return ResponseEntity.ok(result);
     }
 
 }

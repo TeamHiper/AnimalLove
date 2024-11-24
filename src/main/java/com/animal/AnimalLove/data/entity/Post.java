@@ -47,7 +47,7 @@ public class Post extends BaseEntity {
     @ToString.Exclude
     private List<Comment> Comments;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", fetch =FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Image> images;
 
     @Builder

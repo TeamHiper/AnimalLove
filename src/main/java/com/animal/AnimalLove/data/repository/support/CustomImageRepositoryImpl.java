@@ -1,24 +1,24 @@
 package com.animal.AnimalLove.data.repository.support;
 
-import com.animal.AnimalLove.data.entity.User;
+import com.animal.AnimalLove.data.entity.Post;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import static com.animal.AnimalLove.data.entity.QPost.post;
+import static com.animal.AnimalLove.data.entity.QImage.image;
 
 @RequiredArgsConstructor
-public class CustomPostRepositoryImpl implements CustomPostRepository{
+public class CustomImageRepositoryImpl implements CustomImageRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public int updatePost(Long postId, String content, byte[] image, User user) {
+    public int updateImage(Long id, String url, String publicId, Post post) {
 
         long updatedRows = jpaQueryFactory
-                .update(post)
-                .set(post.content, content)
-                .set(post.image, image)
-                .where(post.postId.eq(postId).and(post.user.eq(user)))
+                .update(image)
+                .set(image.url, url)
+                .set(image.publicId, publicId)
+                .where(image.id.eq(id).and(image.post.eq(post)))
                 .execute();
 
         // 업데이트가 성공하면 행 수에 상관없이 1을 반환하고, 실패하면 0 반환
