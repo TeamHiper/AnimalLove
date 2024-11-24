@@ -33,6 +33,7 @@ public record PostDto(
                 .build();
     }
 
+    // user 정보를 수정. 나머지는 기존 정보 그대로
     public Post toEntityWithUser(User user){
         return Post.builder()
                 .postId(postId)
@@ -41,4 +42,5 @@ public record PostDto(
                 .user(user)
                 .build();
     }
+
 }

@@ -11,6 +11,12 @@ public class ApiUrlConstants {
     public static final String FOLLOW = "/follow";
     public static final String IMAGE = "/image";
 
+    public static final String REGISTER = "/register";
+    public static final String UPDATE= "/update";
+    public static final String DELETE= "/delete";
+    public static final String DETAIL= "/detail";
+
+
     public static final String API_V1 = API + V1;
 
     // 유저관련
@@ -18,8 +24,9 @@ public class ApiUrlConstants {
     public static final String API_V1_USER_REGISTER = API + V1 + USER + "/register";
     // 게시물 관련
     public static final String API_V1_POST = API + V1 + POST;
-    public static final String API_V1_POST_REGISTER = API + V1 + POST + "/register";
-    public static final String API_V1_POST_DETAIL = API + V1 + POST + "/detail";
+    public static final String API_V1_POST_REGISTER = API_V1_POST + REGISTER;
+    public static final String API_V1_POST_DETAIL = API_V1_POST + DETAIL;
+    public static final String API_V1_POST_UPDATE = API_V1_POST + UPDATE;
     // 코멘트 관련
     public static final String API_V1_COMMENT = API + V1 + COMMENT;
     // 북마크 관련

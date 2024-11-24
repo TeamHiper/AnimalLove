@@ -24,8 +24,8 @@ public class PostController {
     @Operation(summary = "게시물 등록", description = "새로운 게시물 등록")
     @PostMapping(ApiUrlConstants.API_V1_POST_REGISTER)
     public ResponseEntity<Long> postRegister(@RequestBody PostDto postDto,
-                                             @RequestParam String url,
-                                             @RequestParam String publicId) {
+                                             @RequestParam(name = "url")String url,
+                                             @RequestParam(name = "publicId") String publicId) {
         Long savedPostId = postsService.registerPost(postDto,url,publicId);
         return ResponseEntity.ok().body(savedPostId);
     }
@@ -35,6 +35,15 @@ public class PostController {
     public ResponseEntity<PostDto> getPost(@PathVariable(name = "postId") Long postId) {
         PostDto postDto = postsService.getPost(postId);
         return ResponseEntity.ok().body(postDto);
+    }
+
+    @Operation(summary = "게시물 수정", description = "기존 게시물 수정")
+    @PostMapping(ApiUrlConstants.API_V1_POST_UPDATE)
+    public int postUpdate(@RequestBody PostDto postDto,
+                                             @RequestParam(name = "url")String url,
+                                             @RequestParam(name = "publicId") String publicId) {
+
+        return postsService.updatePost(postDto,url,publicId);
     }
 
 }
