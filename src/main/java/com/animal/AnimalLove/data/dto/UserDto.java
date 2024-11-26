@@ -3,6 +3,7 @@ package com.animal.AnimalLove.data.dto;
 import com.animal.AnimalLove.data.entity.User;
 
 public record UserDto(
+        Long userId,
         String username,
         String name,
         String email,
@@ -10,16 +11,17 @@ public record UserDto(
         byte[] profileImage
 ) {
 
-    public static UserDto of(String username,String name, String email, String role, byte[] profileImage) {
-        return new UserDto(username, name, email, role, profileImage);
+    public static UserDto of(Long userId,String username,String name, String email, String role, byte[] profileImage) {
+        return new UserDto(userId,username, name, email, role, profileImage);
     }
 
     public static UserDto ofJwt(String username,String role) {
-        return new UserDto(username,null,null,role,null);
+        return new UserDto(null,username,null,null,role,null);
     }
 
     public static UserDto from(User user){
         return new UserDto(
+                user.getUserId(),
                 user.getUsername(),
                 user.getName(),
                 user.getEmail(),

@@ -28,12 +28,6 @@ public class Post extends BaseEntity {
     @org.hibernate.annotations.Comment(value = "내용")
     private String content;
 
-    // test용
-    @Column(nullable = true)
-    @org.hibernate.annotations.Comment(value = "이미지")
-    @Lob
-    private byte[] image;
-
     @Convert(converter = StringListConverter.class)
     private List<String> tags; // 게시글에 사용된 태그 목록
 
@@ -51,10 +45,9 @@ public class Post extends BaseEntity {
     private List<Image> images;
 
     @Builder
-    public Post(Long postId, String content, byte[] image, User user) {
+    public Post(Long postId, String content, User user) {
         this.postId = postId;
         this.content = content;
-        this.image = image;
         this.user = user;
     }
 

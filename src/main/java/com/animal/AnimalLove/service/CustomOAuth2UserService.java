@@ -48,14 +48,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existData == null){
 
-            UserDto newUserDto = UserDto.of(username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
+            UserDto newUserDto = UserDto.of(existData.getUserId(),username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
             userRepository.save(newUserDto.toEntity());
 
             return new CustomOAuth2User(newUserDto);
 
         } else {
             UserDto userDto = UserDto.from(existData);
-            UserDto newUserDto = UserDto.of(userDto.username(),
+            UserDto newUserDto = UserDto.of(
+                    userDto.userId(),
+                    userDto.username(),
                     oAuth2Response.getEmail(),
                     oAuth2Response.getName(),
                     userDto.role(),

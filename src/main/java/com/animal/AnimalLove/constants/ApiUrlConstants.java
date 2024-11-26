@@ -20,6 +20,7 @@ public class ApiUrlConstants {
     public static final String API_V1_POST = API + V1 + POST;
     public static final String API_V1_POST_REGISTER = API + V1 + POST + "/register";
     public static final String API_V1_POST_DETAIL = API + V1 + POST + "/detail";
+    public static final String API_V1_POST_LIST = API + V1 + POST + "/list";
     // 코멘트 관련
     public static final String API_V1_COMMENT = API + V1 + COMMENT;
     // 북마크 관련
