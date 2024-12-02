@@ -67,7 +67,7 @@ public class PostService {
         // Pageable 객체 생성
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Post> postList = postRepository.findAll(pageable);
+        Page<Post> postList = postRepository.findAllWithImages(pageable);
 
         return postList.getContent().stream().map(PostDto :: from)
                 .collect(Collectors.toList());
