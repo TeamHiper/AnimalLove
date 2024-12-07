@@ -4,9 +4,7 @@ import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
-
 import com.animal.AnimalLove.data.entity.User;
-
 import com.animal.AnimalLove.data.repository.ImageRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
@@ -18,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +37,7 @@ public class PostService {
         User users = userUtil.getMockUser();
 
         User user = userRepository.findById(users.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("등록된 사용자를 찾을 수 없습니다."));
+                        .orElseThrow(() -> new IllegalArgumentException("등록된 사용자를 찾을 수 없습니다."));
 
         log.info("[userRepository.findById] 값 : {}, {}",user.getUserId(), user.getUsername());
 
@@ -51,8 +47,8 @@ public class PostService {
         //이미지 저장
         imageRepository.save(
                         ImageDto
-                        .of(url,publicId,savedPost)
-                        .toEntity());
+                        .of(url,publicId,savedPost.getPostId())
+                        .toEntity(savedPost));
         return savedPost.getPostId();
 
     }
@@ -68,6 +64,7 @@ public class PostService {
         return PostDto.from(post);
     }
 
+    // 게시물 리스트 조회
     public List<PostDto> getPostList(int page, int size){
         // Pageable 객체 생성
         Pageable pageable = PageRequest.of(page, size);
@@ -98,12 +95,14 @@ public class PostService {
             throw new SecurityException("게시물 수정 권한이 없습니다.");
         }
 
-        int postUpdateResult = postRepository.updatePost(
-                postDto.postId(),
-                postDto.content(),
-                postDto.image(),
-                user
-        );
+        // 더티 체킹으로 update 진행하기 위해 Entity에 직접 수정 작업
+        post.updateContent(postDto.content());
+
+//        int postUpdateResult = postRepository.updatePost(
+//                postDto.postId(),
+//                postDto.content(),
+//                user
+//        );
 
         // Image 수정
         List<Image> images = post.getImages();
@@ -125,7 +124,8 @@ public class PostService {
         }
 
         // 두 업데이트 결과를 조합하여 반환 (성공 시 1, 실패 시 0)
-        return (postUpdateResult > 0 && imageUpdateResult > 0) ? 1 : 0;
+        return imageUpdateResult;
+//        return (postUpdateResult > 0 && imageUpdateResult > 0) ? 1 : 0;
 
     }
 }

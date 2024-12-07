@@ -12,12 +12,11 @@ public class CustomPostRepositoryImpl implements CustomPostRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public int updatePost(Long postId, String content, byte[] image, User user) {
+    public int updatePost(Long postId, String content, User user) {
 
         long updatedRows = jpaQueryFactory
                 .update(post)
                 .set(post.content, content)
-                .set(post.image, image)
                 .where(post.postId.eq(postId).and(post.user.eq(user)))
                 .execute();
 

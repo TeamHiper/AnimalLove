@@ -1,18 +1,15 @@
 package com.animal.AnimalLove.controller;
 
 import com.animal.AnimalLove.constants.ApiUrlConstants;
-import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
