@@ -46,8 +46,6 @@ public class User extends BaseEntity {
     @Lob
     private byte[] profileImage;
 
-    @Convert(converter = LongListConverter.class)
-    private List<Long> likedPosts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude

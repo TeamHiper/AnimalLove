@@ -9,11 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -31,11 +30,20 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 상세조회")
-    @PostMapping(ApiUrlConstants.API_V1_POST_DETAIL+"/{postId}")
+    @GetMapping(ApiUrlConstants.API_V1_POST_DETAIL+"/{postId}")
     public ResponseEntity<PostDto> getPost(@PathVariable(name = "postId") Long postId) {
         PostDto postDto = postsService.getPost(postId);
         return ResponseEntity.ok().body(postDto);
     }
+
+    @Operation(summary = "게시물 리스트조회")
+    @GetMapping(ApiUrlConstants.API_V1_POST_LIST)
+    public ResponseEntity<List<PostDto>> getPostList(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        List<PostDto> postDto = postsService.getPostList(page,size);
+        return ResponseEntity.ok().body(postDto);
+    }
+
 
     @Operation(summary = "게시물 수정", description = "기존 게시물 수정")
     @PostMapping(ApiUrlConstants.API_V1_POST_UPDATE)

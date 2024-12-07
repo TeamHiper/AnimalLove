@@ -13,10 +13,16 @@ import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -61,6 +67,17 @@ public class PostService {
 
         return PostDto.from(post);
     }
+
+    public List<PostDto> getPostList(int page, int size){
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Post> postList = postRepository.findAllWithImages(pageable);
+
+        return postList.getContent().stream().map(PostDto :: from)
+                .collect(Collectors.toList());
+    }
+
 
     // 게시물 수정
     @Transactional

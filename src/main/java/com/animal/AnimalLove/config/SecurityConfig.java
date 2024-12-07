@@ -34,6 +34,7 @@ public class SecurityConfig {
         this.jwtUtil = jwtUtil;
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -92,11 +93,15 @@ public class SecurityConfig {
                                 "/swagger-ui/**",     // Swagger UI 경로
                                 "/v3/api-docs/**",    // OpenAPI 문서 경로
                                 "/swagger-resources/**",
-                                "/webjars/**"         // Swagger 관련 정적 리소스
-                                ,"/api/v1/**"   // 만드는 엔드포인트별 임시 미체크
+                                "/webjars/**",         // Swagger 관련 정적 리소스
+                                "/api/v1/post/**",         // Post List API 경로
+                                "/api/v1/image/upload",
+                                "/h2-console/**"
                         ).permitAll()
 
                         .anyRequest().authenticated());
+        //h2 콘솔
+        http.headers().frameOptions().disable();
 
         //세션 설정 : STATELESS
         http
@@ -107,5 +112,4 @@ public class SecurityConfig {
         return http.build();
 
     }
-
 }
