@@ -2,20 +2,15 @@ package com.animal.AnimalLove.data.dto;
 
 import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
 
 public record ImageDto(
         String url,
         String publicId,
-        Post post
+        Long postId
 ) {
 
 
-    public Image toEntity(){
+    public Image toEntity(Post post){
             return Image.builder()
                     .url(url)
                     .publicId(publicId)
@@ -24,9 +19,9 @@ public record ImageDto(
 
         }
 
-    public static ImageDto of(String url, String publicId,Post post){
+    public static ImageDto of(String url, String publicId, Long postId){
 
-        return new ImageDto(url, publicId, post);
+        return new ImageDto(url, publicId, postId);
     }
 
 
@@ -34,7 +29,7 @@ public record ImageDto(
             return new ImageDto(
                     image.getUrl(),
                     image.getPublicId(),
-                    image.getPost()
+                    image.getPost().getPostId()
             );
     }
 

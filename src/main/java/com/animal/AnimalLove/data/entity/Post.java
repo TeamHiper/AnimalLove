@@ -37,12 +37,13 @@ public class Post extends BaseEntity {
     @ToString.Exclude
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Comment> Comments;
+    private List<Comment> Comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Image> images;
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Image> images = new ArrayList<>();
 
     @Builder
     public Post(Long postId, String content, User user) {
@@ -51,4 +52,7 @@ public class Post extends BaseEntity {
         this.user = user;
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

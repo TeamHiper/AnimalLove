@@ -26,4 +26,6 @@ public class BaseEntity {
     @LastModifiedDate
     private LocalDateTime updatedDttm;
 
+    @Column(nullable = false)
+    private String useYn = "Y";
 }
