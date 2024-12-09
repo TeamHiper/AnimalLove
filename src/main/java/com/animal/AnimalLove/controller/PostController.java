@@ -40,7 +40,7 @@ public class PostController {
     @Operation(summary = "게시물 리스트조회")
     @GetMapping(ApiUrlConstants.API_V1_POST_LIST)
     public ResponseEntity<List<PostDto>> getPostList(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
+                                                     @RequestParam(defaultValue = "5") int size) {
         List<PostDto> postDto = postsService.getPostList(page,size);
         return ResponseEntity.ok().body(postDto);
     }

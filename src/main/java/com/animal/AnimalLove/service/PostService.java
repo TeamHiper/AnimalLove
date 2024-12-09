@@ -64,6 +64,12 @@ public class PostService {
     }
 
     public List<PostDto> getPostList(int page, int size){
+
+        //page 0 아니면 -1
+        if(page !=0){
+            page = page -1;
+        }
+
         // Pageable 객체 생성
         Pageable pageable = PageRequest.of(page, size);
 
