@@ -10,6 +10,7 @@ public class ApiUrlConstants {
     public static final String BOOKMARK = "/bookmark";
     public static final String FOLLOW = "/follow";
     public static final String IMAGE = "/image";
+    public static final String LIKE = "/like";
 
     public static final String REGISTER = "/register";
     public static final String UPDATE= "/update";
@@ -38,5 +39,8 @@ public class ApiUrlConstants {
     // 이미지 관련
     public static final String API_V1_IMAGE = API_V1 + IMAGE;
     public static final String API_V1_IMAGE_UPLOAD = API_V1_IMAGE + "/upload";
+    // 좋아요
+    public static final String API_V1_LIKE_REGISTER = API+V1+LIKE + REGISTER;
+    public static final String API_V1_LIKE_DELETE = API+V1+LIKE + DELETE;
 
 }

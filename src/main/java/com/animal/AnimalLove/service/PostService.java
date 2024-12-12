@@ -3,9 +3,11 @@ package com.animal.AnimalLove.service;
 import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.data.entity.Image;
+import com.animal.AnimalLove.data.entity.Like;
 import com.animal.AnimalLove.data.entity.Post;
 import com.animal.AnimalLove.data.entity.User;
 import com.animal.AnimalLove.data.repository.ImageRepository;
+import com.animal.AnimalLove.data.repository.LikeRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final LikeRepository likeRepository;
 
     // 게시물 등록
     public Long registerPost(PostDto postDto, String url, String publicId){
@@ -77,8 +81,22 @@ public class PostService {
 
         Page<Post> postList = postRepository.findAllWithImages(pageable);
 
-        return postList.getContent().stream().map(PostDto :: from)
-                .collect(Collectors.toList());
+        // 좋아요까지 체크
+        // 좋아요 여부 확인
+        // PostDto 생성
+        return postList.getContent().stream()
+                .map(post -> {
+                    boolean isLiked = this.isLikedByUser(post.getPostId(), post.getUser()); // 좋아요 여부 확인
+                    return PostDto.fromWithLiked(post, isLiked); // PostDto 생성
+                })
+                .toList();
+
+//        return postList.getContent().stream().map(PostDto :: from)
+//                .toList();
+    }
+
+    private boolean isLikedByUser(Long postId, User user) {
+        return likeRepository.findFirstByPostIdAndUser(postId, user).isPresent();
     }
 
 

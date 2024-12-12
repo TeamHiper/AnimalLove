@@ -51,6 +51,10 @@ public class User extends BaseEntity {
     @ToString.Exclude
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Like> likes;
+
     @Builder
     public User(Long userId, String username,String name, String email, String role) {
         this.userId = userId;
