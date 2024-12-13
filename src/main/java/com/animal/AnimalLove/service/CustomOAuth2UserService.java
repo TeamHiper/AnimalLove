@@ -26,7 +26,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println(oAuth2User);
+        //System.out.println(oAuth2User);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response = null;
@@ -48,7 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existData == null){
 
-            UserDto newUserDto = UserDto.of(existData.getUserId(),username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
+            UserDto newUserDto = UserDto.of(username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
             userRepository.save(newUserDto.toEntity());
 
             return new CustomOAuth2User(newUserDto);
@@ -56,7 +56,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             UserDto userDto = UserDto.from(existData);
             UserDto newUserDto = UserDto.of(
-                    userDto.userId(),
                     userDto.username(),
                     oAuth2Response.getEmail(),
                     oAuth2Response.getName(),
