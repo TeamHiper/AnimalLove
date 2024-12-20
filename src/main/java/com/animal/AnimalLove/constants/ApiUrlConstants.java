@@ -40,7 +40,8 @@ public class ApiUrlConstants {
     public static final String API_V1_IMAGE = API_V1 + IMAGE;
     public static final String API_V1_IMAGE_UPLOAD = API_V1_IMAGE + "/upload";
     // 좋아요
-    public static final String API_V1_LIKE_REGISTER = API+V1+LIKE + REGISTER;
-    public static final String API_V1_LIKE_DELETE = API+V1+LIKE + DELETE;
+    public static final String API_V1_LIKE = API_V1 + LIKE;
+    public static final String API_V1_LIKE_REGISTER = API_V1_LIKE + REGISTER;
+    public static final String API_V1_LIKE_DELETE = API_V1_LIKE + DELETE;
 
 }

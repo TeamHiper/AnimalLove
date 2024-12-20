@@ -15,17 +15,17 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
 
-    public Long likeRegister(Long userId, Long postId) {
+    public Boolean likeRegister(Long userId, Long postId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         likeRepository.save(LikeDto.toEntity(postId,user));
-        return postId;
+        return true;
     }
 
-    public Long likeDelete(Long likeId) {
+    public Boolean likeDelete(Long likeId) {
                Like like = likeRepository.findById(likeId)
                        .orElseThrow(() -> new RuntimeException("Like not found"));
                likeRepository.delete(like);
-        return likeId;
+        return false;
     }
 }

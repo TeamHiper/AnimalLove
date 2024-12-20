@@ -11,11 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -52,9 +54,7 @@ public class SecurityConfig {
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
 
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
+                        configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
                         return configuration;
                     }
                 }));
@@ -72,9 +72,9 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //JWTFilter 추가
+        //        //JWTFilter 추가
         http
-                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
 
         //oauth2
@@ -95,13 +95,12 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**",         // Swagger 관련 정적 리소스
                                 "/api/v1/post/**",         // Post List API 경로
+                                "/api/v1/like/**",
                                 "/api/v1/image/upload",
                                 "/h2-console/**"
                         ).permitAll()
-
                         .anyRequest().authenticated());
-        //h2 콘솔
-        http.headers().frameOptions().disable();
+
 
         //세션 설정 : STATELESS
         http

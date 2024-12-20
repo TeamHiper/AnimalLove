@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "like")
+@Table(name = "likes")
 @NoArgsConstructor
 public class Like extends BaseEntity{
 
