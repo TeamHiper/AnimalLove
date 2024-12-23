@@ -25,6 +25,8 @@ public class ApiUrlConstants {
     // 유저관련
     public static final String API_V1_USER = API_V1 + USER;
     public static final String API_V1_USER_REGISTER = API_V1_USER + REGISTER;
+    public static final String API_V1_USER_GETUSER = API_V1_USER + "/getUser";
+
     // 게시물 관련
     public static final String API_V1_POST = API_V1 + POST;
     public static final String API_V1_POST_REGISTER = API_V1_POST + REGISTER;

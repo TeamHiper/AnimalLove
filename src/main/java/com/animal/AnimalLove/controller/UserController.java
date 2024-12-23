@@ -1,18 +1,26 @@
 package com.animal.AnimalLove.controller;
 
 import com.animal.AnimalLove.constants.ApiUrlConstants;
+import com.animal.AnimalLove.data.dto.CustomOAuth2User;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.data.dto.UserDto;
 import com.animal.AnimalLove.service.PostService;
 import com.animal.AnimalLove.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -32,6 +40,25 @@ public class UserController {
     public ResponseEntity<UserDto> userRegister(@RequestBody UserDto userDto) {
         UserDto savedUser = userService.registerUser(userDto);
         return ResponseEntity.ok().body(savedUser);
+    }
+
+    @Operation(summary = "유저 정보 조회", description = "토큰으로 유저정보 조회")
+    @GetMapping(ApiUrlConstants.API_V1_USER_GETUSER)
+    public ResponseEntity<UserDto> userGetUser(@RequestParam("accessToken") String accessToken,
+                                               @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // Principal에서 사용자 정보 추출
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        UserDto userInfo = userService.getUser(customOAuth2User.getName());
+
+        return ResponseEntity.ok().body(userInfo);
     }
 
 }
