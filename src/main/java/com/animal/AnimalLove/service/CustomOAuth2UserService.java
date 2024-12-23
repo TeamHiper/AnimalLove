@@ -63,7 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     userDto.profileImage()
                     );
 
-            userRepository.save(newUserDto.toEntity());
+            //userRepository.save(newUserDto.toEntity());
 
             return new CustomOAuth2User(newUserDto);
 

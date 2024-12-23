@@ -3,8 +3,10 @@ package com.animal.AnimalLove.service;
 import com.animal.AnimalLove.data.dto.UserDto;
 import com.animal.AnimalLove.data.entity.User;
 import com.animal.AnimalLove.data.repository.UserRepository;
+import com.animal.AnimalLove.jwt.JwtUtil;
 import com.animal.AnimalLove.util.MockUserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     public UserDto registerMockUser(){
         User user = MockUserUtil.getMockUser();
@@ -27,5 +30,11 @@ public class UserService {
         User savedUser = userRepository.save(user);
         return UserDto.from(savedUser);
 
+    }
+
+    public UserDto getUser(String username){
+
+        User user = userRepository.findByUsername(username);
+        return UserDto.from(user);
     }
 }
