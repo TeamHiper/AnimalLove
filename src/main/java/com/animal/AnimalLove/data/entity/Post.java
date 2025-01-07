@@ -55,4 +55,15 @@ public class Post extends BaseEntity {
     public void updateContent(String content) {
         this.content = content;
     }
+
+    // 연관된 Image의 useYn 값을 동기화하는 메서드
+    public void setUseYnForImage(String useYn) {
+        // 자신의 useYn 값을 설정
+        this.setUseYn(useYn);
+
+        // 연관된 Images의 useYn 값을 동기화
+        if (images != null) {
+            images.forEach(image -> image.setUseYn(useYn));
+        }
+    }
 }

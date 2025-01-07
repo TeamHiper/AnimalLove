@@ -20,14 +20,14 @@ public class PostController {
     @Operation(summary = "게시물 등록", description = "새로운 게시물 등록")
     @PostMapping(ApiUrlConstants.API_V1_POST_REGISTER)
     public ResponseEntity<Long> postRegister(@RequestBody PostDto postDto,
-                                             @RequestParam(name = "url")String url,
+                                             @RequestParam(name = "url") String url,
                                              @RequestParam(name = "publicId") String publicId) {
-        Long savedPostId = postsService.registerPost(postDto,url,publicId);
+        Long savedPostId = postsService.registerPost(postDto, url, publicId);
         return ResponseEntity.ok().body(savedPostId);
     }
 
     @Operation(summary = "게시물 상세조회")
-    @GetMapping(ApiUrlConstants.API_V1_POST_DETAIL+"/{postId}")
+    @GetMapping(ApiUrlConstants.API_V1_POST_DETAIL + "/{postId}")
     public ResponseEntity<PostDto> getPost(@PathVariable(name = "postId") Long postId) {
         PostDto postDto = postsService.getPost(postId);
         return ResponseEntity.ok().body(postDto);
@@ -37,7 +37,7 @@ public class PostController {
     @GetMapping(ApiUrlConstants.API_V1_POST_LIST)
     public ResponseEntity<List<PostDto>> getPostList(@RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "5") int size) {
-        List<PostDto> postDto = postsService.getPostList(page,size);
+        List<PostDto> postDto = postsService.getPostList(page, size);
         return ResponseEntity.ok().body(postDto);
     }
 
@@ -45,11 +45,25 @@ public class PostController {
     @Operation(summary = "게시물 수정", description = "기존 게시물 수정")
     @PostMapping(ApiUrlConstants.API_V1_POST_UPDATE)
     public ResponseEntity<Integer> postUpdate(@RequestBody PostDto postDto,
-                                              @RequestParam(name = "url")String url,
+                                              @RequestParam(name = "url") String url,
                                               @RequestParam(name = "publicId") String publicId) {
 
-        int result = postsService.updatePost(postDto,url,publicId);
+        int result = postsService.updatePost(postDto, url, publicId);
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "게시물 전체 건수 조회", description = "게시물 전체 건수 조회")
+    @GetMapping(ApiUrlConstants.API_V1_POST_LIST_COUNT)
+    public ResponseEntity<Integer> getPostListCount() {
+        int result = postsService.getPostListCount();
+        return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "게시물 삭제", description = "기존 게시물 삭제")
+    @PostMapping(ApiUrlConstants.API_V1_POST_DELETE + "/{postId}")
+    public ResponseEntity<String> postDelete(@PathVariable(name = "postId") Long postId) {
+
+        postsService.deletePost(postId);
+        return ResponseEntity.ok("삭제 성공");
+    }
 }

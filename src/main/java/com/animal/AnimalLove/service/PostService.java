@@ -11,6 +11,7 @@ import com.animal.AnimalLove.data.repository.LikeRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
 import com.animal.AnimalLove.util.MockUserUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -151,5 +152,19 @@ public class PostService {
         return imageUpdateResult;
 //        return (postUpdateResult > 0 && imageUpdateResult > 0) ? 1 : 0;
 
+    }
+
+    // 게시물 리스트 조회
+    public int getPostListCount(){
+        return postRepository.findAll().size();
+    }
+
+    // 게시물 삭제
+    @Transactional
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post가 존재하지 않습니다."));
+
+        post.setUseYnForImage("N");
     }
 }
