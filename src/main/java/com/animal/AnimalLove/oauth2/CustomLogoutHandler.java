@@ -31,15 +31,28 @@ public class CustomLogoutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         Map<String, String> tokens = Arrays.stream(request.getCookies())
-                .filter(cookie -> "Authorization".equals(cookie.getName()) || "RefreshToken".equals(cookie.getName())) // 필요한 쿠키 필터링
+                .filter(cookie -> "RefreshToken".equals(cookie.getName())) // 필요한 쿠키 필터링
                 .collect(Collectors.toMap(Cookie::getName, Cookie::getValue)); // 쿠키 이름과 값을 맵으로 변환
 
-        String refreshToken = tokens.get("Authorization"); // Refresh Token
+        String refreshToken = tokens.get("RefreshToken"); // Refresh Token
 
-        System.out.println(" ======= refreshToken : " + refreshToken);
+        // refresh 토큰 null 처리
+        if(refreshToken == null || refreshToken.isEmpty()) {
+            System.err.println("Refresh Token이 없습니다.");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request 응답
+            return;
+        }
+
         // 디비에 토큰삭제
         refreshTokenService.deleteRefreshToken(refreshToken);
 
+        // 쿠키삭제
+        Cookie refreshCookie = new Cookie("RefreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setSecure(true);
+        refreshCookie.setPath("/");
+        refreshCookie.setHttpOnly(true);
+        response.addCookie(refreshCookie);
     }
 }
 

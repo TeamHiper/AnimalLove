@@ -74,13 +74,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-//        if (accessToken == null) {
-//            //System.out.println("token null");
-//            filterChain.doFilter(request, response);
-//            //조건이 해당되면 메소드 종료 (필수)
-//            return;
-//        }
-
         //토큰 소멸 시간 검증
         // refreshToken 만료되면 재로그인
         if (jwtUtil.isExpired(refreshToken)) {
@@ -88,12 +81,15 @@ public class JwtFilter extends OncePerRequestFilter {
             refreshCookie.setMaxAge(0);
             refreshCookie.setSecure(true);
             refreshCookie.setPath("/");
+            refreshCookie.setHttpOnly(true);
             response.addCookie(refreshCookie);
+
+            refreshTokenService.deleteRefreshToken(refreshToken);
 
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
-            return;
+            throw new RuntimeException("refresh token expired");
         }
 
         // accessToken 만료시 재발급
@@ -101,16 +97,18 @@ public class JwtFilter extends OncePerRequestFilter {
             RefreshToken ref = refreshTokenService.getRefreshToken(refreshToken).orElseThrow(()
                     -> new RuntimeException("db에 저장된 토큰이 없습니다"));
 
-            accessToken = jwtUtil.createJwt("accessToken",ref.getUsername(), ref.getRole(), 60*60*60L);
-            request.setAttribute("newAccessToken", accessToken);
+            accessToken = jwtUtil.createJwt("accessToken",ref.getEmail(), ref.getRole(), 60*60*60L);
+            response.setHeader("Authorization", accessToken);
+            // 요청 속성에 새로운 토큰 저장
+            request.setAttribute("New-Access-Token", accessToken);
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(accessToken);
+        String email = jwtUtil.getEmail(accessToken);
         String role = jwtUtil.getRole(accessToken);
 
         //userDTO를 생성하여 값 set
-        UserDto userDto = UserDto.ofJwt(username,role);
+        UserDto userDto = UserDto.ofJwt(email,role);
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDto);

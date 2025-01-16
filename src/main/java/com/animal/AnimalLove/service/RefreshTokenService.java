@@ -13,8 +13,8 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     // Refresh Token 저장
-    public void saveRefreshToken(String refreshToken, String username, String role, Long expiration) {
-        RefreshToken entity = new RefreshToken(refreshToken, username, role, expiration);
+    public void saveRefreshToken(String refreshToken, String email, String role, Long expiration) {
+        RefreshToken entity = new RefreshToken(refreshToken, email, role, expiration);
         refreshTokenRepository.save(entity);
     }
 
@@ -24,7 +24,7 @@ public class RefreshTokenService {
     }
 
     // Refresh Token 삭제
-    public void deleteRefreshToken(String username) {
-        refreshTokenRepository.deleteById(username);
+    public void deleteRefreshToken(String email) {
+        refreshTokenRepository.deleteById(email);
     }
 }

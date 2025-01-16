@@ -17,17 +17,18 @@ public class LikeController {
     private final LikeService likeService;
 
     @Operation(summary = "좋아요 추가", description = "좋아요 추가")
-    @PostMapping(ApiUrlConstants.API_V1_LIKE_REGISTER)
-    public ResponseEntity<Boolean> likeRegister(@RequestParam(name = "userId") Long userId,
-                                                @RequestParam(name = "postId") Long postId){
-        boolean likedYN = likeService.likeRegister(userId,postId);
+    @PostMapping(ApiUrlConstants.API_V1_LIKE)
+    public ResponseEntity<Boolean> likeYN(@RequestParam String email,
+                                                @RequestParam Long postId){
+        boolean likedYN = likeService.likeYN(email,postId);
         return ResponseEntity.ok().body(likedYN);
     }
 
-    @Operation(summary = "좋아요 삭제", description = "좋아요 삭제")
-    @PostMapping(ApiUrlConstants.API_V1_LIKE_DELETE)
-    public ResponseEntity<Boolean> likeDelete(@RequestParam(name = "likeId") Long likeId){
-        boolean likedYN = likeService.likeDelete(likeId);
+    @Operation(summary = "좋아요 여부", description = "좋아요 여부")
+    @PostMapping(ApiUrlConstants.API_V1_LIKE_CHECK)
+    public ResponseEntity<Boolean> likeCheck(@RequestParam String email,
+                                            @RequestParam Long postId){
+        boolean likedYN = likeService.likeCheck(email,postId);
         return ResponseEntity.ok().body(likedYN);
     }
 

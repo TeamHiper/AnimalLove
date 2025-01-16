@@ -57,8 +57,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserDto userDto = UserDto.from(existData);
             UserDto newUserDto = UserDto.of(
                     userDto.username(),
-                    oAuth2Response.getEmail(),
                     oAuth2Response.getName(),
+                    oAuth2Response.getEmail(),
                     userDto.role(),
                     userDto.profileImage()
                     );

@@ -20,7 +20,7 @@ public class RefreshToken implements Serializable {
     @Id // Redis에서 고유 키
     private String refreshToken; // Refresh Token 값
 
-    private String username; // 사용자 식별자 (Key)
+    private String email; // 사용자 식별자 (Key)
     private String role;
     private Long expiration; // 만료 시간 (Optional)
 

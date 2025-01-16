@@ -32,9 +32,9 @@ public class UserService {
 
     }
 
-    public UserDto getUser(String username){
+    public UserDto getUser(String email){
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         return UserDto.from(user);
     }
 }

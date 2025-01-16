@@ -15,8 +15,8 @@ public record UserDto(
         return new UserDto(username, name, email, role, profileImage);
     }
 
-    public static UserDto ofJwt(String username,String role) {
-        return new UserDto(null,username,null,role,null);
+    public static UserDto ofJwt(String email,String role) {
+        return new UserDto(null,null,email,role,null);
     }
 
     public static UserDto from(User user){

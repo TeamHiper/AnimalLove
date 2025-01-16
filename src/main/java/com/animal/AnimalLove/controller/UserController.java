@@ -4,6 +4,7 @@ import com.animal.AnimalLove.constants.ApiUrlConstants;
 import com.animal.AnimalLove.data.dto.CustomOAuth2User;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.data.dto.UserDto;
+import com.animal.AnimalLove.jwt.JwtUtil;
 import com.animal.AnimalLove.service.PostService;
 import com.animal.AnimalLove.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @Operation(summary = "Mock 유저 등록", description = "Mock User 등록")
     @PostMapping(ApiUrlConstants.API_V1_USER_REGISTER+"/mock")
@@ -45,7 +47,8 @@ public class UserController {
     @Operation(summary = "유저 정보 조회", description = "토큰으로 유저정보 조회")
     @GetMapping(ApiUrlConstants.API_V1_USER_GETUSER)
     public ResponseEntity<UserDto> userGetUser(@RequestParam("accessToken") String accessToken,
-                                               @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+                                               @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+                                               HttpServletRequest request) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -56,9 +59,19 @@ public class UserController {
         // Principal에서 사용자 정보 추출
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        UserDto userInfo = userService.getUser(customOAuth2User.getName());
+        UserDto userInfo = userService.getUser(customOAuth2User.getEmail());
 
-        return ResponseEntity.ok().body(userInfo);
+        // accesstoken 만료여부
+        if(jwtUtil.isExpired(authorizationHeader)){
+            String newAccessToken = (String) request.getAttribute("New-Access-Token");
+            return ResponseEntity.ok()
+                    .header("Authorization", newAccessToken)
+                    .body(userInfo);
+        }
+
+        return ResponseEntity.ok()
+                .header("Authorization", authorizationHeader)
+                .body(userInfo);
     }
 
 }
