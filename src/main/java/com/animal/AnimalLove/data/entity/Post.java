@@ -45,6 +45,9 @@ public class Post extends BaseEntity {
     @ToString.Exclude
     private List<Image> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
     @Builder
     public Post(Long postId, String content, User user) {
         this.postId = postId;

@@ -97,7 +97,9 @@ public class PostService {
     }
 
     private boolean isLikedByUser(Long postId, User user) {
-        return likeRepository.findFirstByPostIdAndUser(postId, user).isPresent();
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found in like"));
+        return likeRepository.findFirstByPostAndUser(post, user).isPresent();
     }
 
 

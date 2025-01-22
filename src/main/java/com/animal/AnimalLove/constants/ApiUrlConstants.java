@@ -47,5 +47,8 @@ public class ApiUrlConstants {
     // 좋아요
     public static final String API_V1_LIKE = API_V1 + LIKE;
     public static final String API_V1_LIKE_CHECK = API_V1_LIKE+"/check";
+    public static final String API_V1_LIKE_COUNT = API_V1_LIKE+COUNT;
+    public static final String API_V1_LIKE_WHO = API_V1_LIKE+"/who";
+    public static final String API_V1_LIKE_LIST = API_V1_LIKE+LIST;
 
 }

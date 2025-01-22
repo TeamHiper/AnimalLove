@@ -25,13 +25,15 @@ public class Like extends BaseEntity{
     @ToString.Exclude
     private User user;
 
-    private Long postId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
 
     @Builder
-    public Like(Long likeId, User user, Long postId) {
+    public Like(Long likeId, User user, Post post) {
         this.likeId = likeId;
         this.user = user;
-        this.postId = postId;
+        this.post = post;
     }
 
 }
