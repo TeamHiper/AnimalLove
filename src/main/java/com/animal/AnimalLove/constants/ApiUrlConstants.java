@@ -37,6 +37,10 @@ public class ApiUrlConstants {
     public static final String API_V1_POST_DELETE = API_V1_POST + DELETE;
     // 코멘트 관련
     public static final String API_V1_COMMENT = API_V1 + COMMENT;
+    public static final String API_V1_COMMENT_REGISTER = API_V1_COMMENT + REGISTER;
+    public static final String API_V1_COMMENT_DETAIL = API_V1_COMMENT + DETAIL;
+    public static final String API_V1_COMMENT_UPDATE = API_V1_COMMENT + UPDATE;
+    public static final String API_V1_COMMENT_DELETE = API_V1_COMMENT + DELETE;
     // 북마크 관련
     public static final String API_V1_BOOKMARK = API_V1 + BOOKMARK;
     // 팔로우 관련

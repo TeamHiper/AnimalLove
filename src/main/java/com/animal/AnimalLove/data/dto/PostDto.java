@@ -3,10 +3,8 @@ package com.animal.AnimalLove.data.dto;
 import com.animal.AnimalLove.data.entity.Image;
 import com.animal.AnimalLove.data.entity.Post;
 import com.animal.AnimalLove.data.entity.User;
-import com.animal.AnimalLove.service.ImageService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record PostDto(
         Long postId,
