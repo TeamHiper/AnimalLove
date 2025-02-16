@@ -20,9 +20,10 @@ public class PostController {
     @Operation(summary = "게시물 등록", description = "새로운 게시물 등록")
     @PostMapping(ApiUrlConstants.API_V1_POST_REGISTER)
     public ResponseEntity<Long> postRegister(@RequestBody PostDto postDto,
+                                             @RequestParam(name = "email") String email,
                                              @RequestParam(name = "url") String url,
                                              @RequestParam(name = "publicId") String publicId) {
-        Long savedPostId = postsService.registerPost(postDto, url, publicId);
+        Long savedPostId = postsService.registerPost(postDto, url, publicId,email);
         return ResponseEntity.ok().body(savedPostId);
     }
 

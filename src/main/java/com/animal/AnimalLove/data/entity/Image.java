@@ -25,12 +25,12 @@ public class Image extends BaseEntity {
     private String publicId; // Cloudinary에서 제공하는 public_id
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId", nullable = false)
+    @JoinColumn(name = "postId")
     @Comment(value = "포스트 아이디")
     private Post post;
 
     @Builder
-    public Image(String url, String publicId, Post post){
+    public Image(String url, String publicId, Post post) {
         this.url=url;
         this.publicId=publicId;
         this.post=post;

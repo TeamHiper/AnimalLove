@@ -26,8 +26,12 @@ public class User extends BaseEntity {
     private Long userId;
 
     @Column(nullable = false)
-    @Comment(value = "유저 이름")
-    private String username;
+    @Comment(value = "닉네임")
+    private String nickname;
+
+    @Column(nullable = false)
+    @Comment(value = "oauth2 프로바이더Id")
+    private String provider;
 
     @Comment(value = "유저 실명")
     private String name;
@@ -40,13 +44,6 @@ public class User extends BaseEntity {
     @Comment(value = "역할")
     private String role;
 
-    // test용
-    @Column(nullable = true)
-    @Comment(value = "프로필 이미지")
-    @Lob
-    private byte[] profileImage;
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @ToString.Exclude
     private List<Post> posts;
@@ -55,13 +52,23 @@ public class User extends BaseEntity {
     @ToString.Exclude
     private List<Like> likes;
 
+    @Column(nullable = true)
+    @Comment(value = "프로필 이미지 경로")
+    private String profileImageUrl;
+
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     @Builder
-    public User(Long userId, String username,String name, String email, String role) {
+    public User(Long userId,String provider,String nickname,String name, String email, String role, String profileImageUrl) {
         this.userId = userId;
-        this.username = username;
+        this.provider = provider;
+        this.nickname = nickname;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.profileImageUrl = profileImageUrl;
     }
 
 }

@@ -44,6 +44,8 @@ public class ApiUrlConstants {
     // 이미지 관련
     public static final String API_V1_IMAGE = API_V1 + IMAGE;
     public static final String API_V1_IMAGE_UPLOAD = API_V1_IMAGE + "/upload";
+    public static final String API_V1_IMAGE_UPLOAD_PROFILE = API_V1_IMAGE + "/upload/profile";
+
     // 좋아요
     public static final String API_V1_LIKE = API_V1 + LIKE;
     public static final String API_V1_LIKE_CHECK = API_V1_LIKE+"/check";

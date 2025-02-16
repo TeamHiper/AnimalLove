@@ -3,14 +3,12 @@ package com.animal.AnimalLove.service;
 import com.animal.AnimalLove.data.dto.ImageDto;
 import com.animal.AnimalLove.data.dto.PostDto;
 import com.animal.AnimalLove.data.entity.Image;
-import com.animal.AnimalLove.data.entity.Like;
 import com.animal.AnimalLove.data.entity.Post;
 import com.animal.AnimalLove.data.entity.User;
 import com.animal.AnimalLove.data.repository.ImageRepository;
 import com.animal.AnimalLove.data.repository.LikeRepository;
 import com.animal.AnimalLove.data.repository.PostRepository;
 import com.animal.AnimalLove.data.repository.UserRepository;
-import com.animal.AnimalLove.util.MockUserUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -35,16 +31,12 @@ public class PostService {
     private final LikeRepository likeRepository;
 
     // 게시물 등록
-    public Long registerPost(PostDto postDto, String url, String publicId){
+    public Long registerPost(PostDto postDto, String url, String publicId,String email){
 
-        // 임의 user
-        MockUserUtil userUtil = new MockUserUtil();
-        User users = userUtil.getMockUser();
-
-        User user = userRepository.findById(users.getUserId())
+        User user = userRepository.findByEmail(email)
                         .orElseThrow(() -> new IllegalArgumentException("등록된 사용자를 찾을 수 없습니다."));
 
-        log.info("[userRepository.findById] 값 : {}, {}",user.getUserId(), user.getUsername());
+        log.info("[userRepository.findById] 값 : {}, {}",user.getUserId(), user.getNickname());
 
         Post post = postDto.toEntityWithUser(user);
 

@@ -43,12 +43,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 로그인 성공 시 로직 추후 작성
-        String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
-        User existData = userRepository.findByUsername(username);
+        String provider = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+        User existData = userRepository.findByProvider(provider);
 
         if (existData == null){
 
-            UserDto newUserDto = UserDto.of(username, oAuth2Response.getEmail(), oAuth2Response.getName(), "ROLE_USER",null);
+            UserDto newUserDto = UserDto.of(provider, oAuth2Response.getNickname(),oAuth2Response.getName(), oAuth2Response.getEmail(), "ROLE_USER",oAuth2Response.getProfileImageUrl());
             userRepository.save(newUserDto.toEntity());
 
             return new CustomOAuth2User(newUserDto);
@@ -56,11 +56,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             UserDto userDto = UserDto.from(existData);
             UserDto newUserDto = UserDto.of(
-                    userDto.username(),
+                    provider,
+                    userDto.nickname(),
                     oAuth2Response.getName(),
                     oAuth2Response.getEmail(),
                     userDto.role(),
-                    userDto.profileImage()
+                    userDto.profileImageUrl()
                     );
 
             //userRepository.save(newUserDto.toEntity());
